@@ -16,6 +16,7 @@ const TodoItem = ({ item, onToggleComplete }) => {
         <Switch
           value={item.isComplete}
           onValueChange={toggleSwitch}
+          testID="toggleButton"
         />
       </View>
     );
