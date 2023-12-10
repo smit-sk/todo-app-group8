@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const useTodoViewModel = () => {
   const [todos, setTodos] = useState([]);
@@ -10,15 +10,19 @@ const useTodoViewModel = () => {
     return newId;
   };
 
-  const clearAll = () => {
+  const deleteAll = () => {
     setTodos([]);
   };
 
   const changeStatus = (id) => {
-    setTodos(todos.map(todo => todo.id === id ? { ...todo, isComplete: !todo.isComplete } : todo));
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, isComplete: !todo.isComplete } : todo
+      )
+    );
   };
 
-  return { todos, addTask, clearAll, changeStatus };
+  return { todos, addTask, deleteAll, changeStatus };
 };
 
 export default useTodoViewModel;
