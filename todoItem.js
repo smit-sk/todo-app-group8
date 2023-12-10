@@ -1,29 +1,29 @@
 import { View, Switch, Text, StyleSheet } from "react-native";
 import { useState } from "react";
 
-const TodoItem = ({ item }) => {
-    const [isCompleted, setCompleted] = useState(item.isComplete);
-  
+const TodoItem = ({ item, onToggleComplete }) => {
+   
     const toggleSwitch = () => {
-      setCompleted(!isCompleted);
+      onToggleComplete(item.id) 
     };
   
     return (
       <View style={styles.container}>
         <View style={styles.itemCon}>
         <Text style = {{fontWeight:'600',fontSize:18 }}>{item.name}</Text>
-        <Text style={{color: isCompleted ? "green" : 'red' , fontWeight:'500'}}> {isCompleted == true ? "DONE" : "PENDING"} </Text>
+        <Text style={{color: item.isComplete ? "green" : 'red' , fontWeight:'500'}}> {item.isComplete == true ? "DONE" : "PENDING"} </Text>
         </View>
         <Switch
-          value={isCompleted}
+          value={item.isComplete}
           onValueChange={toggleSwitch}
         />
       </View>
     );
   };
-  
 
-export default TodoItem;
+
+
+
 
 
 const styles = StyleSheet.create({
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
     }
   });
   
-
+  export default TodoItem;

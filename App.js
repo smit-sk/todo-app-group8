@@ -1,63 +1,51 @@
-
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, FlatList, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import TodoItem from './todoItem';
-import { useState } from 'react';
+import useTodoViewModel from './todoViewModel'; // Make sure to create this file
 
-export default function App() {
-  const [tasks, setTasks] = useState([
-    { id: '1', name: 'Task 1', isComplete: false },
-    { id: '2', name: 'Task 2', isComplete: true },
-  ]);
-
+const App = () => {
+  const { todos, addTask, clearAll, changeStatus } = useTodoViewModel();
   const [taskName, setTaskName] = useState('');
 
   const onPressAdd = () => {
     if (taskName) {
-      const addTask = {
-        id: (tasks.length + 1).toString(),
-        name: taskName,
-        isComplete: false,
-      };
-
-      setTasks((oldTasks) => [...oldTasks, addTask]);
-     
+      addTask(taskName);
+      setTaskName('');
     }
-    setTaskName('')
   };
-
-  const onDelete = () => {
-    setTasks([]);
-  }
 
   return (
     <View style={styles.container}>
       <View style={styles.appBar}>
-        <Text style={styles.appBarText}>
-          Todo List
-        </Text>
-        <MaterialCommunityIcons.Button onPress={onDelete} backgroundColor="white" name="delete" size={24} color="red" />
+        <Text style={styles.appBarText}>Todo List</Text>
+        <MaterialCommunityIcons.Button onPress={clearAll} backgroundColor="white" name="delete" size={24} color="red" />
       </View>
       <View style={styles.itemsView}>
-        {tasks.length > 0 ? (
+        {todos.length > 0 ? (
           <FlatList
-            data={tasks}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <TodoItem item={item} />}
+            data={todos}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => <TodoItem item={item} onToggleComplete={() => changeStatus(item.id)} />}
           />
         ) : (
-          <Text style={{textAlign:'center'}}>No tasks added</Text>
+          <Text style={{textAlign: 'center'}}>No tasks added</Text>
         )}
       </View>
       <View style={styles.addtaskView}>
-        <TextInput placeholder='Enter a todo task' onChangeText={(text) => setTaskName(text)} style={styles.textInput}></TextInput>
+        <TextInput
+          placeholder='Enter a todo task'
+          value={taskName}
+          onChangeText={setTaskName}
+          style={styles.textInput}
+        />
         <TouchableOpacity onPress={onPressAdd} style={styles.addTaskBtn}>
-          <Text style={styles.addTaskText}> Add Task</Text>
+          <Text style={styles.addTaskText}>Add Task</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -67,10 +55,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   appBar: {
-    display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 12
   },
   appBarText: {
@@ -82,7 +69,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   addtaskView: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
@@ -94,14 +80,16 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     padding: 8
   },
-  addTaskText: {
-    margin: 8,
-    color: 'white',
-    textAlign: 'center',
-    fontWeight: "bold"
-  },
   addTaskBtn: {
     marginLeft: 10,
-    backgroundColor: '#008080'
+    backgroundColor: '#008080',
+    padding: 8
+  },
+  addTaskText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold'
   }
 });
+
+export default App;
