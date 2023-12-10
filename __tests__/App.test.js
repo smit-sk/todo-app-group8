@@ -19,7 +19,6 @@ describe("App component", () => {
   });
 });
 
-// After calling deleteAll(), there should be no more items in the list.
 describe("After calling deleteAll(), there should be no more items in the list.", () => {
   it("should delete all items in the list", async () => {
     const { getByPlaceholderText, getByText, findByText } = render(<App />);
@@ -33,5 +32,21 @@ describe("After calling deleteAll(), there should be no more items in the list."
     fireEvent.press(deleteButton);
     const noTasks = findByText("No tasks added");
     expect(noTasks).toBeTruthy();
+  });
+});
+
+describe("After adding a todo to the list, The todos isComplete property should be set to false", () => {
+  it("should set the todos isComplete property to false", async () => {
+    const { getByPlaceholderText, getByText, findByText } = render(<App />);
+    const input = getByPlaceholderText("Enter a todo task");
+    const addButton = getByText("Add Task");
+    fireEvent.changeText(input, "New Task");
+    fireEvent.press(addButton);
+    const newTask = findByText("New Task");
+    expect(newTask).toBeTruthy();
+    const todoItem = getByText("New Task");
+    fireEvent.press(todoItem);
+    const completedTask = findByText("New Task");
+    expect(completedTask).toBeTruthy();
   });
 });
