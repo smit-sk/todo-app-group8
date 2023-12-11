@@ -1,11 +1,14 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, renderHook, fireEvent } from "@testing-library/react-native";
 import App from "../App";
 import useTodoViewModel from "../todoViewModel";
+import { addTask, todoList, changeStatus } from "../todoViewModel";
 
 describe("After calling deleteAll(), there should be no more items in the list.", () => {
   it("should delete all items in the list", async () => {
-    const { getByPlaceholderText, getByText, findByText, getByTestId } = render(<App />);
+    const { getByPlaceholderText, getByText, findByText, getByTestId } = render(
+      <App />
+    );
     const input = getByPlaceholderText("Enter a todo task");
     const addButton = getByText("Add Task");
     fireEvent.changeText(input, "New Task");
@@ -35,12 +38,13 @@ describe("changeStatus can be used to mark a task as complete", () => {
   });
 
   it("changeStatus can be used to mark a task as complete", () => {
-    const taskId = addTask("new task");
-    expect(todoList[0].isComplete).toBe(false);
+    const { result } = renderHook(() => useTodoViewModel());
+    const taskId = result.current.addTask("new task");
+    expect(result.current.todos[0].isComplete).toBe(false);
     changeStatus(taskId, true);
-    expect(todoList[0].isComplete).toBe(true);
+    expect(result.current.todos[0].isComplete).toBe(true);
     changeStatus(taskId, false);
-    expect(todoList[0].isComplete).toBe(false);
+    expect(result.current.todos[0].isComplete).toBe(false);
   });
 });
 
