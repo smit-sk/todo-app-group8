@@ -10,7 +10,7 @@ const useCustomHook = (initialValue) => {
     setTodoCompletionValue((prevValue) => !prevValue);
   };
 
-  return [todoCompletionValue, toggle];
+  return {todoCompletionValue, toggle};
 };
 
 export default useCustomHook;
