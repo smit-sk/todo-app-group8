@@ -32,6 +32,7 @@ const App = () => {
           name="delete"
           size={24}
           color="red"
+          testID="deleteButton"
         />
       </View>
       <View style={styles.itemsView}>
