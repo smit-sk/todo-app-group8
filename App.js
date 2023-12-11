@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import TodoItem from "./todoItem";
-import useTodoViewModel from "./todoViewModel"; // Make sure to create this file
+import useTodoViewModel from "./todoViewModel";
 
 const App = () => {
   const { todos, addTask, deleteAll, changeStatus } = useTodoViewModel();

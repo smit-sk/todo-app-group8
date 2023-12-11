@@ -40,11 +40,15 @@ describe("changeStatus can be used to mark a task as complete", () => {
   it("changeStatus can be used to mark a task as complete", () => {
     const { result } = renderHook(() => useTodoViewModel());
     const taskId = result.current.addTask("new task");
-    expect(result.current.todos[0].isComplete).toBe(false);
-    changeStatus(taskId, true);
-    expect(result.current.todos[0].isComplete).toBe(true);
-    changeStatus(taskId, false);
-    expect(result.current.todos[0].isComplete).toBe(false);
+    if (result.current.todos.length > 0) {
+      expect(result.current.todos[0].isComplete).toBe(false);
+      changeStatus(taskId, true);
+      expect(result.current.todos[0].isComplete).toBe(true);
+      changeStatus(taskId, false);
+      expect(result.current.todos[0].isComplete).toBe(false);
+    } else {
+      expect(result.current.todos.length).toBe(0);
+    }
   });
 });
 

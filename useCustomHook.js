@@ -6,7 +6,7 @@ const useCustomHook = (initialValue) => {
 
   const toggle = (todoId) => {
  
-    todos[todoId].isComplete = !todos[todoId].isComplete;
+    //todos[todoId].isComplete = !todos[todoId].isComplete;
     setTodoCompletionValue((prevValue) => !prevValue);
   };
 

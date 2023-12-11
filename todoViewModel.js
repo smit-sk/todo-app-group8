@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const useTodoViewModel = () => {
   const [todos, setTodos] = useState([]);
+  const idCounter = useRef(0);
 
   const addTask = (name) => {
-    const newId = todos.length;
+    const newId = idCounter.current++;;
     const newTodo = { id: newId, name: name, isComplete: false };
     setTodos([...todos, newTodo]);
     return newId;

@@ -1,7 +1,5 @@
 import useCustomHook from "../useCustomHook";
-import { renderHook } from "@testing-library/react-native";
-import { addTask, todoList } from "../todoViewModel";
-import useTodoViewModel from "../todoViewModel";
+import { renderHook } from "@testing-library/react-native"
 
 describe("Use Task Status", () => {
   it("Can set the initial value of the custom hook's state state variable", () => {
@@ -9,12 +7,18 @@ describe("Use Task Status", () => {
     const { result } = renderHook(() => useCustomHook(initialValue));
     expect(result.current[0]).toBe(initialValue);
   });
-
-  it("Calling toggle updates the state", () => {
-    const { result } = renderHook(() => useTodoViewModel());
-    const taskId = result.current.addTask("new task");
-    result.current.todos[taskId].isComplete = false;
-    toggle(taskId);
-    expect(result.current.todos[taskId].isComplete).toBe(true);
+  it('should toggle the completion state of a todo item', () => {
+    const { result } = renderHook(() => useCustomHook(false));
+    expect(result.current.todoCompletionValue).toBe(false);
+    act(() => {
+      result.current.toggle();
+    });
+    expect(result.current.todoCompletionValue).toBe(true);
+    act(() => {
+      result.current.toggle();
+    });
+    expect(result.current.todoCompletionValue).toBe(false);
   });
+  
+  
 });
